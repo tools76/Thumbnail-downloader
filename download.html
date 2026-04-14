@@ -11,8 +11,6 @@
         .data-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #f1f5f9; position: relative; }
         .stat-box { text-align: center; padding: 15px; border-radius: 15px; background: #f8fafc; }
         .copy-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .copy-btn:hover { background: #dc2626; }
-        .copy-btn:active { transform: scale(0.9); }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen py-10 px-4">
@@ -24,56 +22,56 @@
         </div>
 
         <div id="mainContent" class="hidden">
-            <div id="videoInfo" class="data-card text-center">
-                <img id="vThumb" class="w-full rounded-xl shadow-lg mb-6 border-4 border-white" src="">
-                <button id="dlBtn" onclick="forceDownloadThumbnail()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl mb-6 shadow-md w-full sm:w-auto">HD থাম্বনেইল ডাউনলোড</button>
+            <div id="mediaBox" class="data-card text-center">
+                <img id="mainImg" class="w-48 h-48 mx-auto rounded-full shadow-lg mb-6 border-4 border-white object-cover" src="">
+                <button id="dlBtn" onclick="forceDownloadMedia()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl mb-6 shadow-md w-full sm:w-auto">HD মিডিয়া ডাউনলোড</button>
                 
                 <div class="text-left relative">
                     <button onclick="copyTextFromElement('vTitle')" class="copy-btn">COPY</button>
-                    <h2 class="text-red-600 font-bold text-lg mb-1">ভিডিও টাইটেল:</h2>
+                    <h2 id="titleLabel" class="text-red-600 font-bold text-lg mb-1">নাম/টাইটেল:</h2>
                     <p id="vTitle" class="text-gray-800 font-bold text-xl pr-16 mb-3"></p>
                     
-                    <div class="flex gap-4 mt-2 p-3 bg-red-50 rounded-xl">
-                        <div class="text-sm">ভিডিও ভিউ: <span id="vViews" class="font-bold text-red-600">0</span></div>
-                        <div class="text-sm">লাইক: <span id="vLikes" class="font-bold text-red-600">0</span></div>
+                    <div id="videoMeta" class="flex gap-4 mt-2 p-3 bg-red-50 rounded-xl">
+                        <div class="text-sm">ভিউ: <span id="vViews" class="font-bold text-red-600">0</span></div>
+                        <div id="likeSection" class="text-sm">লাইক: <span id="vLikes" class="font-bold text-red-600">0</span></div>
                     </div>
                 </div>
             </div>
 
             <div id="channelStats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <div class="stat-box border-b-4 border-blue-500">
-                    <span class="text-xs text-gray-500 uppercase">Subscribers</span>
+                    <span class="text-xs text-gray-500 uppercase font-bold">Subscribers</span>
                     <div id="cSubs" class="text-xl font-bold text-gray-800">0</div>
                 </div>
                 <div class="stat-box border-b-4 border-red-500">
-                    <span class="text-xs text-gray-500 uppercase">Channel Total Views</span>
+                    <span class="text-xs text-gray-500 uppercase font-bold">Total Views</span>
                     <div id="cViews" class="text-xl font-bold text-gray-800">0</div>
                 </div>
                 <div class="stat-box border-b-4 border-yellow-500">
-                    <span class="text-xs text-gray-500 uppercase">Total Videos</span>
+                    <span class="text-xs text-gray-500 uppercase font-bold">Videos</span>
                     <div id="cVids" class="text-xl font-bold text-gray-800">0</div>
                 </div>
                 <div class="stat-box border-b-4 border-green-500">
                     <span class="text-xs text-gray-500 font-bold uppercase">Monthly Income</span>
-                    <div id="cIncome" class="text-xl font-bold text-green-600">$0-$0</div>
+                    <div id="cIncome" class="text-xl font-bold text-green-600">$0 - $0</div>
                 </div>
             </div>
 
-            <div class="data-card">
+            <div id="tagCard" class="data-card">
                 <button onclick="copyTextFromElement('vTags')" class="copy-btn">COPY</button>
-                <h3 class="font-bold text-red-600 mb-2">ভিডিও ট্যাগ (Video Keywords):</h3>
+                <h3 class="font-bold text-red-600 mb-2">ট্যাগ/কিওয়ার্ড:</h3>
                 <div id="vTags" class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl italic pr-16 min-h-[50px]"></div>
             </div>
 
             <div class="data-card">
                 <button onclick="copyTextFromElement('cKeywords')" class="copy-btn">COPY</button>
-                <h3 class="font-bold text-blue-600 mb-2">চ্যানেল কিওয়ার্ড (Channel Keywords):</h3>
+                <h3 class="font-bold text-blue-600 mb-2">চ্যানেল কিওয়ার্ড:</h3>
                 <div id="cKeywords" class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl italic pr-16 min-h-[50px]"></div>
             </div>
 
             <div class="data-card">
                 <button onclick="copyTextFromElement('vDesc')" class="copy-btn">COPY</button>
-                <h3 class="font-bold text-red-600 mb-2">ভিডিও ডেসক্রিপশন:</h3>
+                <h3 id="descLabel" class="font-bold text-red-600 mb-2">ডেসক্রিপশন/বায়ো:</h3>
                 <textarea id="vDesc" readonly class="w-full h-48 bg-gray-50 p-4 text-xs text-gray-600 rounded-xl outline-none border-none resize-none"></textarea>
             </div>
 
@@ -87,98 +85,150 @@
 
     <script>
         const API_KEY = 'AIzaSyBvSbU2JjdRttm9-u1DxCmL3-BD_Wlo46E';
-        let currentVideoId = "";
+        let downloadUrl = "";
+        let fileName = "media.jpg";
 
         window.onload = async function() {
             const url = localStorage.getItem('ytTargetUrl');
             if(!url) { window.location.href = 'index.html'; return; }
 
             try {
-                if (url.includes('v=')) currentVideoId = url.split('v=')[1].split('&')[0];
-                else if (url.includes('shorts/')) currentVideoId = url.split('shorts/')[1].split('?')[0];
-                else currentVideoId = url.split('/').pop().split('?')[0];
-
-                const vRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${currentVideoId}&key=${API_KEY}`);
-                const vData = await vRes.json();
-                const item = vData.items[0];
-
-                document.getElementById('vThumb').src = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
-                document.getElementById('vTitle').innerText = item.snippet.title;
-                document.getElementById('vTags').innerText = item.snippet.tags ? item.snippet.tags.join(', ') : 'No Video Tags Found';
-                document.getElementById('vDesc').value = item.snippet.description;
-                document.getElementById('vViews').innerText = Number(item.statistics.viewCount).toLocaleString();
-                document.getElementById('vLikes').innerText = item.statistics.likeCount ? Number(item.statistics.likeCount).toLocaleString() : "N/A";
-
-                const channelId = item.snippet.channelId;
-                const cRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,brandingSettings&id=${channelId}&key=${API_KEY}`);
-                const cData = await cRes.json();
-                const channel = cData.items[0];
-
-                const channelKeywords = channel.brandingSettings?.channel?.keywords;
-                document.getElementById('cKeywords').innerText = channelKeywords ? channelKeywords : 'No Channel Keywords Found';
-
-                document.getElementById('cSubs').innerText = Number(channel.statistics.subscriberCount).toLocaleString();
-                document.getElementById('cViews').innerText = Number(channel.statistics.viewCount).toLocaleString();
-                document.getElementById('cVids').innerText = channel.statistics.videoCount;
-
-                const totalViews = Number(channel.statistics.viewCount);
-                const avgMonthlyViews = totalViews / 24;
-                const minInc = (avgMonthlyViews / 1000) * 0.25;
-                const maxInc = (avgMonthlyViews / 1000) * 4.0;
-                document.getElementById('cIncome').innerText = `$${Math.floor(minInc/10)} - $${Math.floor(maxInc/5)}`;
-
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('mainContent').classList.remove('hidden');
-
+                // ডিটেক্ট করা হচ্ছে এটি কি ভিডিও নাকি চ্যানেল
+                if (url.includes('watch?v=') || url.includes('youtu.be/') || url.includes('shorts/')) {
+                    await fetchVideoData(url);
+                } else {
+                    await fetchChannelDataByUrl(url);
+                }
             } catch (error) {
                 console.error(error);
-                alert("তথ্য পাওয়া যায়নি।");
+                alert("সঠিক তথ্য পাওয়া যায়নি।");
                 window.location.href = 'index.html';
             }
         };
 
-        // থাম্বনেইল সরাসরি ডাউনলোড করার ফাংশন
-        async function forceDownloadThumbnail() {
-            const btn = document.getElementById('dlBtn');
-            const imageUrl = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
-            
-            btn.innerText = "ডাউনলোড হচ্ছে...";
-            btn.disabled = true;
+        // ভিডিও ডাটা আনার ফাংশন
+        async function fetchVideoData(url) {
+            let videoId = "";
+            if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0];
+            else if (url.includes('shorts/')) videoId = url.split('shorts/')[1].split('?')[0];
+            else videoId = url.split('/').pop().split('?')[0];
 
+            const vRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${videoId}&key=${API_KEY}`);
+            const vData = await vRes.json();
+            const item = vData.items[0];
+
+            // সেটআপ
+            const imgEl = document.getElementById('mainImg');
+            imgEl.classList.remove('rounded-full');
+            imgEl.classList.add('rounded-xl', 'w-full', 'h-auto');
+            downloadUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+            imgEl.src = downloadUrl;
+            fileName = `thumbnail-${videoId}.jpg`;
+
+            document.getElementById('vTitle').innerText = item.snippet.title;
+            document.getElementById('vTags').innerText = item.snippet.tags ? item.snippet.tags.join(', ') : 'No Tags Found';
+            document.getElementById('vDesc').value = item.snippet.description;
+            document.getElementById('vViews').innerText = Number(item.statistics.viewCount).toLocaleString();
+            document.getElementById('vLikes').innerText = item.statistics.likeCount ? Number(item.statistics.likeCount).toLocaleString() : "N/A";
+
+            await fetchChannelStats(item.snippet.channelId);
+            showContent();
+        }
+
+        // চ্যানেল ডাটা সরাসরি লিংক থেকে আনার ফাংশন
+        async function fetchChannelDataByUrl(url) {
+            let identifier = "";
+            let apiEndpoint = "";
+
+            if (url.includes('/@')) {
+                identifier = url.split('/@')[1].split('/')[0].split('?')[0];
+                apiEndpoint = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,brandingSettings&forHandle=${identifier}&key=${API_KEY}`;
+            } else if (url.includes('/channel/')) {
+                identifier = url.split('/channel/')[1].split('/')[0].split('?')[0];
+                apiEndpoint = `https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,brandingSettings&id=${identifier}&key=${API_KEY}`;
+            }
+
+            const cRes = await fetch(apiEndpoint);
+            const cData = await cRes.json();
+            const channel = cData.items[0];
+
+            // সেটআপ (লোগো মোড)
+            const imgEl = document.getElementById('mainImg');
+            downloadUrl = channel.snippet.thumbnails.high.url;
+            imgEl.src = downloadUrl;
+            fileName = `channel-logo-${channel.id}.jpg`;
+            
+            document.getElementById('titleLabel').innerText = "চ্যানেলের নাম:";
+            document.getElementById('vTitle').innerText = channel.snippet.title;
+            document.getElementById('descLabel').innerText = "চ্যানেল বায়ো:";
+            document.getElementById('vDesc').value = channel.snippet.description;
+            document.getElementById('tagCard').classList.add('hidden');
+            document.getElementById('likeSection').classList.add('hidden');
+            document.getElementById('vViews').innerText = "চ্যানেল ভিউ"; 
+
+            updateChannelStatsUI(channel);
+            showContent();
+        }
+
+        // চ্যানেলের স্ট্যাটস এবং ইনকাম আপডেট
+        async function fetchChannelStats(channelId) {
+            const cRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,brandingSettings&id=${channelId}&key=${API_KEY}`);
+            const cData = await cRes.json();
+            updateChannelStatsUI(cData.items[0]);
+        }
+
+        function updateChannelStatsUI(channel) {
+            document.getElementById('cSubs').innerText = Number(channel.statistics.subscriberCount).toLocaleString();
+            document.getElementById('cViews').innerText = Number(channel.statistics.viewCount).toLocaleString();
+            document.getElementById('cVids').innerText = channel.statistics.videoCount;
+
+            const channelKeywords = channel.brandingSettings?.channel?.keywords;
+            document.getElementById('cKeywords').innerText = channelKeywords ? channelKeywords : 'No Keywords Found';
+
+            // ইনকাম ক্যালকুলেশন (উন্নত লজিক)
+            const totalViews = Number(channel.statistics.viewCount);
+            const videoCount = Number(channel.statistics.videoCount) || 1;
+            const avgViewsPerVid = totalViews / videoCount;
+            const monthlyViews = (avgViewsPerVid * (videoCount > 50 ? 5 : 2)); 
+            
+            const minInc = (monthlyViews / 1000) * 0.25;
+            const maxInc = (monthlyViews / 1000) * 3.50;
+            document.getElementById('cIncome').innerText = `$${Math.floor(minInc)} - $${Math.floor(maxInc)}`;
+        }
+
+        async function forceDownloadMedia() {
+            const btn = document.getElementById('dlBtn');
+            btn.innerText = "ডাউনলোড হচ্ছে...";
             try {
-                const response = await fetch(imageUrl);
+                const response = await fetch(downloadUrl);
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.style.display = 'none';
                 a.href = url;
-                a.download = `youtube-thumbnail-${currentVideoId}.jpg`;
+                a.download = fileName;
                 document.body.appendChild(a);
                 a.click();
-                window.URL.revokeObjectURL(url);
-                btn.innerText = "HD থাম্বনেইল ডাউনলোড";
-                btn.disabled = false;
-            } catch (error) {
-                console.error("Download failed", error);
-                window.open(imageUrl, '_blank'); // ফেইল করলে আগের মতো অন্য পেজে ওপেন হবে
-                btn.innerText = "HD থাম্বনেইল ডাউনলোড";
-                btn.disabled = false;
+                btn.innerText = "HD মিডিয়া ডাউনলোড";
+            } catch (err) {
+                window.open(downloadUrl, '_blank');
+                btn.innerText = "HD মিডিয়া ডাউনলোড";
             }
+        }
+
+        function showContent() {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
         }
 
         function copyTextFromElement(id) {
             const el = document.getElementById(id);
             const tempInput = document.getElementById('tempInput');
             let textToCopy = (el.tagName === 'TEXTAREA') ? el.value : el.innerText;
-
-            if (textToCopy && !textToCopy.includes('No Video Tags') && !textToCopy.includes('No Channel Keywords')) {
+            if (textToCopy) {
                 tempInput.value = textToCopy;
                 tempInput.select();
-                tempInput.setSelectionRange(0, 99999);
                 document.execCommand('copy');
-                alert("সফলভাবে কপি হয়েছে!");
-            } else {
-                alert("কপি করার মতো কোনো তথ্য নেই।");
+                alert("কপি হয়েছে!");
             }
         }
     </script>
