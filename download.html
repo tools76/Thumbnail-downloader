@@ -3,114 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Your HD Thumbnail - Nazrul Tools</title>
-    
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7690803775663030" crossorigin="anonymous"></script>
+    <title>Analysis Result - Nazrul Tools</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap');
         body { font-family: 'Hind Siliguri', sans-serif; }
+        .data-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #f1f5f9; position: relative; }
+        .stat-box { text-align: center; padding: 15px; border-radius: 15px; background: #f8fafc; }
+        .copy-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .copy-btn:hover { background: #dc2626; }
+        .copy-btn:active { transform: scale(0.9); }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen py-10 px-4 flex flex-col items-center">
+<body class="bg-slate-50 min-h-screen py-10 px-4">
 
-    <div class="max-w-3xl w-full bg-white p-6 md:p-8 rounded-3xl shadow-xl text-center">
-        <h2 class="text-2xl font-bold text-green-600 mb-6">আপনার থাম্বনেইল প্রস্তুত!</h2>
-
-        <div id="loading" class="text-blue-500 font-bold my-10 text-xl italic">প্রসেসিং হচ্ছে...</div>
-        
-        <div id="previewContainer" class="hidden">
-            <div class="relative group">
-                <img id="thumbImage" src="" class="w-full rounded-2xl shadow-lg border-4 border-white mb-6" alt="HD Thumbnail">
-                <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition rounded-2xl"></div>
-            </div>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-                <button onclick="forceDownload()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-10 py-4 rounded-2xl shadow-lg transition text-lg flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    HD ডাউনলোড করুন
-                </button>
-                <a href="index.html" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-10 py-4 rounded-2xl transition flex items-center justify-center">
-                    আবার চেষ্টা করুন
-                </a>
-            </div>
+    <div class="max-w-4xl mx-auto">
+        <div id="loader" class="text-center py-20">
+            <div class="inline-block animate-spin rounded-full h-10 w-10 border-t-2 border-red-600 mb-4"></div>
+            <p class="text-gray-500 font-bold">সার্ভার থেকে তথ্য রিড করা হচ্ছে...</p>
         </div>
 
-        <div class="my-10">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-7690803775663030"
-                 data-ad-slot="5826413062"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+        <div id="mainContent" class="hidden">
+            <div id="videoInfo" class="data-card text-center">
+                <img id="vThumb" class="w-full rounded-xl shadow-lg mb-6 border-4 border-white" src="">
+                <button id="dlBtn" onclick="forceDownloadThumbnail()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl mb-6 shadow-md w-full sm:w-auto">HD থাম্বনেইল ডাউনলোড</button>
+                
+                <div class="text-left relative">
+                    <button onclick="copyTextFromElement('vTitle')" class="copy-btn">COPY</button>
+                    <h2 class="text-red-600 font-bold text-lg mb-1">ভিডিও টাইটেল:</h2>
+                    <p id="vTitle" class="text-gray-800 font-bold text-xl pr-16 mb-3"></p>
+                    
+                    <div class="flex gap-4 mt-2 p-3 bg-red-50 rounded-xl">
+                        <div class="text-sm">ভিডিও ভিউ: <span id="vViews" class="font-bold text-red-600">0</span></div>
+                        <div class="text-sm">লাইক: <span id="vLikes" class="font-bold text-red-600">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="channelStats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="stat-box border-b-4 border-blue-500">
+                    <span class="text-xs text-gray-500 uppercase">Subscribers</span>
+                    <div id="cSubs" class="text-xl font-bold text-gray-800">0</div>
+                </div>
+                <div class="stat-box border-b-4 border-red-500">
+                    <span class="text-xs text-gray-500 uppercase">Channel Total Views</span>
+                    <div id="cViews" class="text-xl font-bold text-gray-800">0</div>
+                </div>
+                <div class="stat-box border-b-4 border-yellow-500">
+                    <span class="text-xs text-gray-500 uppercase">Total Videos</span>
+                    <div id="cVids" class="text-xl font-bold text-gray-800">0</div>
+                </div>
+                <div class="stat-box border-b-4 border-green-500">
+                    <span class="text-xs text-gray-500 font-bold uppercase">Monthly Income</span>
+                    <div id="cIncome" class="text-xl font-bold text-green-600">$0-$0</div>
+                </div>
+            </div>
+
+            <div class="data-card">
+                <button onclick="copyTextFromElement('vTags')" class="copy-btn">COPY</button>
+                <h3 class="font-bold text-red-600 mb-2">ভিডিও ট্যাগ (Video Keywords):</h3>
+                <div id="vTags" class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl italic pr-16 min-h-[50px]"></div>
+            </div>
+
+            <div class="data-card">
+                <button onclick="copyTextFromElement('cKeywords')" class="copy-btn">COPY</button>
+                <h3 class="font-bold text-blue-600 mb-2">চ্যানেল কিওয়ার্ড (Channel Keywords):</h3>
+                <div id="cKeywords" class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl italic pr-16 min-h-[50px]"></div>
+            </div>
+
+            <div class="data-card">
+                <button onclick="copyTextFromElement('vDesc')" class="copy-btn">COPY</button>
+                <h3 class="font-bold text-red-600 mb-2">ভিডিও ডেসক্রিপশন:</h3>
+                <textarea id="vDesc" readonly class="w-full h-48 bg-gray-50 p-4 text-xs text-gray-600 rounded-xl outline-none border-none resize-none"></textarea>
+            </div>
+
+            <div class="text-center mt-6">
+                <a href="index.html" class="text-gray-500 underline font-bold">আরেকটি সার্চ করুন</a>
+            </div>
         </div>
     </div>
 
+    <textarea id="tempInput" style="position: absolute; left: -9999px;"></textarea>
+
     <script>
-        let finalImageUrl = "";
+        const API_KEY = 'AIzaSyBvSbU2JjdRttm9-u1DxCmL3-BD_Wlo46E';
+        let currentVideoId = "";
 
-        window.onload = function() {
-            const link = localStorage.getItem('targetUrl');
-            const thumbImg = document.getElementById('thumbImage');
-            const loading = document.getElementById('loading');
-            const container = document.getElementById('previewContainer');
+        window.onload = async function() {
+            const url = localStorage.getItem('ytTargetUrl');
+            if(!url) { window.location.href = 'index.html'; return; }
 
-            if (!link) {
-                window.location.href = 'index.html';
-                return;
-            }
+            try {
+                if (url.includes('v=')) currentVideoId = url.split('v=')[1].split('&')[0];
+                else if (url.includes('shorts/')) currentVideoId = url.split('shorts/')[1].split('?')[0];
+                else currentVideoId = url.split('/').pop().split('?')[0];
 
-            let videoId = "";
-            if (link.includes('youtube.com/watch?v=')) {
-                videoId = link.split('v=')[1].split('&')[0];
-            } else if (link.includes('youtu.be/')) {
-                videoId = link.split('/').pop().split('?')[0];
-            } else if (link.includes('youtube.com/shorts/')) {
-                videoId = link.split('shorts/')[1].split('?')[0];
-            }
+                const vRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&id=${currentVideoId}&key=${API_KEY}`);
+                const vData = await vRes.json();
+                const item = vData.items[0];
 
-            if (videoId) {
-                // সরাসরি ইমেজ না নিয়ে প্রক্সি ব্যবহার করছি যাতে ডাউনলোড হয়
-                finalImageUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-                
-                // ইমেজ চেক করা (যদি HD না থাকে তবে HQ লোড হবে)
-                const img = new Image();
-                img.src = finalImageUrl;
-                img.onload = () => {
-                    if (img.width === 120) { // ইউটিউব ডিফল্ট এরর ইমেজ উইডথ ১২০ হয়
-                        finalImageUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
-                        thumbImg.src = finalImageUrl;
-                    } else {
-                        thumbImg.src = finalImageUrl;
-                    }
-                    loading.classList.add('hidden');
-                    container.classList.remove('hidden');
-                };
-            } else {
-                alert("দুঃখিত, সঠিক ইউটিউব লিঙ্ক পাওয়া যায়নি!");
+                document.getElementById('vThumb').src = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+                document.getElementById('vTitle').innerText = item.snippet.title;
+                document.getElementById('vTags').innerText = item.snippet.tags ? item.snippet.tags.join(', ') : 'No Video Tags Found';
+                document.getElementById('vDesc').value = item.snippet.description;
+                document.getElementById('vViews').innerText = Number(item.statistics.viewCount).toLocaleString();
+                document.getElementById('vLikes').innerText = item.statistics.likeCount ? Number(item.statistics.likeCount).toLocaleString() : "N/A";
+
+                const channelId = item.snippet.channelId;
+                const cRes = await fetch(`https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics,brandingSettings&id=${channelId}&key=${API_KEY}`);
+                const cData = await cRes.json();
+                const channel = cData.items[0];
+
+                const channelKeywords = channel.brandingSettings?.channel?.keywords;
+                document.getElementById('cKeywords').innerText = channelKeywords ? channelKeywords : 'No Channel Keywords Found';
+
+                document.getElementById('cSubs').innerText = Number(channel.statistics.subscriberCount).toLocaleString();
+                document.getElementById('cViews').innerText = Number(channel.statistics.viewCount).toLocaleString();
+                document.getElementById('cVids').innerText = channel.statistics.videoCount;
+
+                const totalViews = Number(channel.statistics.viewCount);
+                const avgMonthlyViews = totalViews / 24;
+                const minInc = (avgMonthlyViews / 1000) * 0.25;
+                const maxInc = (avgMonthlyViews / 1000) * 4.0;
+                document.getElementById('cIncome').innerText = `$${Math.floor(minInc/10)} - $${Math.floor(maxInc/5)}`;
+
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('mainContent').classList.remove('hidden');
+
+            } catch (error) {
+                console.error(error);
+                alert("তথ্য পাওয়া যায়নি।");
                 window.location.href = 'index.html';
             }
         };
 
-        // এই ফাংশনটি ফাইলটিকে সরাসরি ডাউনলোড করতে বাধ্য করবে
-        async function forceDownload() {
+        // থাম্বনেইল সরাসরি ডাউনলোড করার ফাংশন
+        async function forceDownloadThumbnail() {
+            const btn = document.getElementById('dlBtn');
+            const imageUrl = `https://img.youtube.com/vi/${currentVideoId}/maxresdefault.jpg`;
+            
+            btn.innerText = "ডাউনলোড হচ্ছে...";
+            btn.disabled = true;
+
             try {
-                const response = await fetch(finalImageUrl);
+                const response = await fetch(imageUrl);
                 const blob = await response.blob();
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
                 a.href = url;
-                a.download = 'NazrulTools_HD_Thumbnail.jpg';
+                a.download = `youtube-thumbnail-${currentVideoId}.jpg`;
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
+                btn.innerText = "HD থাম্বনেইল ডাউনলোড";
+                btn.disabled = false;
             } catch (error) {
-                // যদি ব্রাউজার ব্লক করে তবে ব্যাকআপ হিসেবে নতুন ট্যাবে ওপেন হবে
-                window.open(finalImageUrl, '_blank');
+                console.error("Download failed", error);
+                window.open(imageUrl, '_blank'); // ফেইল করলে আগের মতো অন্য পেজে ওপেন হবে
+                btn.innerText = "HD থাম্বনেইল ডাউনলোড";
+                btn.disabled = false;
+            }
+        }
+
+        function copyTextFromElement(id) {
+            const el = document.getElementById(id);
+            const tempInput = document.getElementById('tempInput');
+            let textToCopy = (el.tagName === 'TEXTAREA') ? el.value : el.innerText;
+
+            if (textToCopy && !textToCopy.includes('No Video Tags') && !textToCopy.includes('No Channel Keywords')) {
+                tempInput.value = textToCopy;
+                tempInput.select();
+                tempInput.setSelectionRange(0, 99999);
+                document.execCommand('copy');
+                alert("সফলভাবে কপি হয়েছে!");
+            } else {
+                alert("কপি করার মতো কোনো তথ্য নেই।");
             }
         }
     </script>
