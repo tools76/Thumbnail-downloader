@@ -1,86 +1,123 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analysis Result - Nazrul Tools- thumbnail downloader-youtube analysis</title>
+    <title>Analysis Result - Nazrul Tools Premium Analytics</title>
+    
+    <meta name="description" content="View detailed YouTube analysis results including HD thumbnails, tags, description, and channel statistics.">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7690803775663030" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&display=swap');
-        body { font-family: 'Hind Siliguri', sans-serif; }
-        .data-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #f1f5f9; position: relative; }
-        .stat-box { text-align: center; padding: 15px; border-radius: 15px; background: #f8fafc; }
-        .copy-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 5px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        #mainImg { transition: transform 0.3s ease; }
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Hind+Siliguri:wght@400;700&display=swap');
+        body { font-family: 'Outfit', 'Hind Siliguri', sans-serif; background: #f8fafc; color: #1e293b; }
+        .data-card { background: white; padding: 25px; border-radius: 2.5rem; box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.05); margin-bottom: 25px; border: 1px solid #f1f5f9; position: relative; }
+        .stat-box { text-align: center; padding: 20px; border-radius: 1.5rem; background: #ffffff; border: 1px solid #f1f5f9; transition: transform 0.3s ease; }
+        .stat-box:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .copy-btn { position: absolute; top: 15px; right: 15px; background: #ef4444; color: white; padding: 6px 15px; border-radius: 10px; font-size: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; z-index: 10; }
+        .copy-btn:hover { background: #b91c1c; transform: scale(1.05); }
+        #mainImg { transition: all 0.5s ease; border-radius: 1.5rem; }
+        .seo-content { line-height: 1.8; text-align: justify; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen py-10 px-4">
+<body class="min-h-screen py-10 px-4">
 
     <div class="max-w-4xl mx-auto">
         <div id="loader" class="text-center py-20">
-            <div class="inline-block animate-spin rounded-full h-10 w-10 border-t-2 border-red-600 mb-4"></div>
-            <p class="text-gray-500 font-bold">সার্ভার থেকে তথ্য রিড করা হচ্ছে...</p>
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-red-600 mb-4"></div>
+            <p class="text-slate-500 font-bold tracking-widest uppercase text-xs">Fetching Data from Server...</p>
         </div>
 
         <div id="mainContent" class="hidden">
             <div id="mediaBox" class="data-card text-center">
-                <div class="relative inline-block mb-6">
-                    <img id="mainImg" class="w-48 h-48 mx-auto rounded-full shadow-lg border-4 border-white object-cover bg-gray-100" src="" alt="Thumbnail/Logo">
+                <div class="relative inline-block mb-8 group">
+                    <img id="mainImg" class="w-48 h-48 mx-auto shadow-2xl border-4 border-white object-cover bg-slate-50" src="" alt="Thumbnail/Logo">
                 </div>
                 <br>
-                <button id="dlBtn" onclick="forceDownloadMedia()" class="bg-green-600 hover:bg-green-700 text-white font-bold px-8 py-3 rounded-xl mb-6 shadow-md w-full sm:w-auto">HD মিডিয়া ডাউনলোড</button>
+                <button id="dlBtn" onclick="forceDownloadMedia()" class="bg-red-600 hover:bg-red-700 text-white font-black px-10 py-4 rounded-2xl mb-8 shadow-xl w-full sm:w-auto transition-all active:scale-95 uppercase tracking-wider">Download HD Media</button>
                 
-                <div class="text-left relative">
+                <div class="text-left relative bg-slate-50 p-6 rounded-3xl border border-slate-100">
                     <button onclick="copyTextFromElement('vTitle')" class="copy-btn">COPY</button>
-                    <h2 id="titleLabel" class="text-red-600 font-bold text-lg mb-1">নাম/টাইটেল:</h2>
-                    <p id="vTitle" class="text-gray-800 font-bold text-xl pr-16 mb-3"></p>
+                    <h2 id="titleLabel" class="text-red-600 font-black text-xs uppercase tracking-widest mb-2">Name / Title:</h2>
+                    <p id="vTitle" class="text-slate-800 font-bold text-xl pr-16 leading-tight"></p>
                     
-                    <div id="videoMeta" class="flex flex-wrap gap-4 mt-2 p-3 bg-red-50 rounded-xl">
-                        <div class="text-sm">ভিউ: <span id="vViews" class="font-bold text-red-600">0</span></div>
-                        <div id="likeSection" class="text-sm">লাইক: <span id="vLikes" class="font-bold text-red-600">0</span></div>
+                    <div id="videoMeta" class="flex flex-wrap gap-6 mt-6 pt-6 border-t border-slate-200">
+                        <div class="text-sm font-bold text-slate-400">VIEWS: <span id="vViews" class="text-red-600">0</span></div>
+                        <div id="likeSection" class="text-sm font-bold text-slate-400">LIKES: <span id="vLikes" class="text-red-600">0</span></div>
                     </div>
                 </div>
             </div>
 
-            <div id="channelStats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div id="channelStats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                 <div class="stat-box border-b-4 border-blue-500">
-                    <span class="text-xs text-gray-500 uppercase font-bold">Subscribers</span>
-                    <div id="cSubs" class="text-xl font-bold text-gray-800">0</div>
+                    <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Subscribers</span>
+                    <div id="cSubs" class="text-xl font-black text-slate-800">0</div>
                 </div>
                 <div class="stat-box border-b-4 border-red-500">
-                    <span class="text-xs text-gray-500 uppercase font-bold">Total Views</span>
-                    <div id="cViews" class="text-xl font-bold text-gray-800">0</div>
+                    <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Total Views</span>
+                    <div id="cViews" class="text-xl font-black text-slate-800">0</div>
                 </div>
                 <div class="stat-box border-b-4 border-yellow-500">
-                    <span class="text-xs text-gray-500 uppercase font-bold">Videos</span>
-                    <div id="cVids" class="text-xl font-bold text-gray-800">0</div>
+                    <span class="text-[10px] text-slate-400 uppercase font-black tracking-widest">Videos</span>
+                    <div id="cVids" class="text-xl font-black text-slate-800">0</div>
                 </div>
                 <div class="stat-box border-b-4 border-green-500">
-                    <span class="text-xs text-gray-500 font-bold uppercase">Monthly Income</span>
-                    <div id="cIncome" class="text-xl font-bold text-green-600">$0 - $0</div>
+                    <span class="text-[10px] text-slate-400 font-black uppercase tracking-widest">Est. Income</span>
+                    <div id="cIncome" class="text-xl font-black text-green-600">$0 - $0</div>
                 </div>
             </div>
 
             <div id="tagCard" class="data-card">
                 <button onclick="copyTextFromElement('vTags')" class="copy-btn">COPY</button>
-                <h3 class="font-bold text-red-600 mb-2">ভিডিও ট্যাগ:</h3>
-                <div id="vTags" class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl italic pr-16 min-h-[50px]"></div>
+                <h3 class="font-black text-xs text-red-600 uppercase tracking-widest mb-4">Video Tags & Keywords:</h3>
+                <div id="vTags" class="text-sm text-slate-600 bg-slate-50 p-6 rounded-2xl italic pr-16 min-h-[60px] leading-relaxed"></div>
             </div>
 
             <div class="data-card">
                 <button onclick="copyTextFromElement('cKeywords')" class="copy-btn">COPY</button>
-                <h3 class="font-bold text-blue-600 mb-2">চ্যানেল কিওয়ার্ড:</h3>
-                <div id="cKeywords" class="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl italic pr-16 min-h-[50px]"></div>
+                <h3 class="font-black text-xs text-blue-600 uppercase tracking-widest mb-4">Channel Keywords:</h3>
+                <div id="cKeywords" class="text-sm text-slate-600 bg-slate-50 p-6 rounded-2xl italic pr-16 min-h-[60px] leading-relaxed"></div>
             </div>
 
             <div class="data-card">
                 <button onclick="copyTextFromElement('vDesc')" class="copy-btn">COPY</button>
-                <h3 id="descLabel" class="font-bold text-red-600 mb-2">ডেসক্রিপশন/বায়ো:</h3>
-                <textarea id="vDesc" readonly class="w-full h-48 bg-gray-50 p-4 text-xs text-gray-600 rounded-xl outline-none border-none resize-none"></textarea>
+                <h3 id="descLabel" class="font-black text-xs text-red-600 uppercase tracking-widest mb-4">Description / Bio:</h3>
+                <textarea id="vDesc" readonly class="w-full h-56 bg-slate-50 p-6 text-sm text-slate-600 rounded-2xl outline-none border-none resize-none leading-relaxed"></textarea>
             </div>
 
-            <div class="text-center mt-6">
-                <a href="index.html" class="text-gray-500 underline font-bold">আরেকটি সার্চ করুন</a>
+            <div class="mb-10 overflow-hidden rounded-[2.5rem] bg-white border border-slate-100 p-4 shadow-sm">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-7690803775663030" data-ad-slot="5826413062" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+            <div class="data-card seo-content">
+                <h2 class="text-2xl font-black text-slate-800 mb-6 italic">Understanding Your YouTube SEO Analysis</h2>
+                <div class="space-y-4 text-slate-500 text-sm md:text-base">
+                    <p>
+                        Analyzing your YouTube performance is the first step toward viral success. At <strong>Nazrul Tools Premium</strong>, we provide a deep dive into the metadata that powers the YouTube algorithm. When you extract tags, descriptions, and channel statistics using our pro analyzer, you aren't just getting numbers; you are getting a roadmap for growth. Understanding the keywords used by high-performing channels in your niche allows you to optimize your own content for maximum reach.
+                    </p>
+                    <p>
+                        Our **Thumbnail Downloader** provides the highest possible resolution (MaxResDefault) because we know that the first thing a viewer sees is the visual representation of your video. A high click-through rate (CTR) is often the result of a compelling, high-quality thumbnail. By studying successful thumbnails, you can adapt design trends into your own cinematic productions.
+                    </p>
+                    <p>
+                        The **Estimated Monthly Income** feature is a specialized algorithm developed by Nazrul Islam's team at <strong>AMR Technology</strong>. It calculates potential earnings based on total views, video count, and industry-standard RPM (Revenue Per Mille). While these are estimates, they offer a clear picture of the commercial viability of a channel, helping marketers and creators gauge the competition.
+                    </p>
+                    <p>
+                        Metadata like <strong>Video Tags</strong> and <strong>Channel Keywords</strong> are often hidden from the average user. However, these are crucial for "Searchable Content." By copying and analyzing these tags, you can ensure that your video appears in the "Suggested Videos" section alongside top-tier creators. Consistency in your channel keywords tells the YouTube algorithm exactly who your target audience is, leading to better subscriber conversion.
+                    </p>
+                    <p>
+                        Finally, a well-structured **Description** is essential for SEO. It should contain primary keywords in the first two lines to capture search intent. Our tool allows you to instantly copy and study how professional YouTubers format their bios, timestamps, and social links. Use this data to refine your own voice and build a professional digital brand that stands out.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-10 pb-20">
+                <a href="index.html" class="inline-flex items-center gap-2 text-slate-400 hover:text-red-600 font-black uppercase text-xs tracking-[0.2em] transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                    Perform Another Search
+                </a>
             </div>
         </div>
     </div>
@@ -104,7 +141,7 @@
                 }
             } catch (error) {
                 console.error(error);
-                alert("তথ্য লোড করতে সমস্যা হয়েছে। দয়া করে সঠিক লিংক দিন।");
+                alert("Data loading failed. Please provide a valid link.");
                 window.location.href = 'index.html';
             }
         };
@@ -119,10 +156,9 @@
             const data = await response.json();
             const video = data.items[0];
 
-            // ইমেজ সেটআপ
             const mainImg = document.getElementById('mainImg');
             mainImg.classList.remove('rounded-full');
-            mainImg.classList.add('rounded-xl', 'w-full', 'h-auto');
+            mainImg.classList.add('rounded-[2rem]', 'w-full', 'h-auto');
             
             mediaUrl = `https://i.ytimg.com/vi/${vId}/maxresdefault.jpg`;
             mainImg.src = mediaUrl;
@@ -154,11 +190,12 @@
 
             mediaUrl = channel.snippet.thumbnails.high.url;
             document.getElementById('mainImg').src = mediaUrl;
+            document.getElementById('mainImg').classList.add('rounded-full');
             finalFileName = `channel-logo-${channel.id}.jpg`;
 
-            document.getElementById('titleLabel').innerText = "চ্যানেলের নাম:";
+            document.getElementById('titleLabel').innerText = "CHANNEL NAME:";
             document.getElementById('vTitle').innerText = channel.snippet.title;
-            document.getElementById('descLabel').innerText = "চ্যানেল বায়ো:";
+            document.getElementById('descLabel').innerText = "CHANNEL BIO:";
             document.getElementById('vDesc').value = channel.snippet.description;
             
             document.getElementById('tagCard').style.display = 'none';
@@ -182,7 +219,6 @@
             const keywords = chan.brandingSettings?.channel?.keywords;
             document.getElementById('cKeywords').innerText = keywords ? keywords : 'No Channel Keywords';
 
-            // ইনকাম লজিক
             const totalV = Number(chan.statistics.viewCount);
             const vCount = Number(chan.statistics.videoCount) || 1;
             const monthlyEst = (totalV / vCount) * 2; 
@@ -193,9 +229,8 @@
 
         async function forceDownloadMedia() {
             const btn = document.getElementById('dlBtn');
-            btn.innerText = "প্রসেসিং হচ্ছে...";
+            btn.innerText = "PROCESSING...";
             try {
-                // সরাসরি ডাউনলোড করার জন্য ইমেজ ব্লব ট্রিক
                 const imgData = await fetch(mediaUrl);
                 const blob = await imgData.blob();
                 const url = window.URL.createObjectURL(blob);
@@ -207,10 +242,9 @@
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
             } catch (e) {
-                // যদি fetch এ সমস্যা হয় (CORS), তবে নিউ ট্যাবে ওপেন হবে
                 window.open(mediaUrl, '_blank');
             }
-            btn.innerText = "HD মিডিয়া ডাউনলোড";
+            btn.innerText = "DOWNLOAD HD MEDIA";
         }
 
         function finishLoading() {
@@ -224,8 +258,8 @@
             temp.value = (el.tagName === 'TEXTAREA') ? el.value : el.innerText;
             temp.select();
             document.execCommand('copy');
-            alert("সফলভাবে কপি হয়েছে!");
+            alert("Copied successfully!");
         }
     </script>
 </body>
-</html>
+</html>খ
